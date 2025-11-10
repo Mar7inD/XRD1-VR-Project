@@ -76,14 +76,17 @@ namespace NavKeypad
             if (int.TryParse(currentInput, out var currentKombo))
             {
                 bool granted = currentKombo == keypadCombo;
+                
+                // TIMER INTEGRATION: Apply penalty for wrong code
+                if (!granted && EscapeRoomTimer.Instance != null)
+                {
+                    EscapeRoomTimer.Instance.ApplyPenalty();
+                }
+                
                 if (!displayingResult)
                 {
                     StartCoroutine(DisplayResultRoutine(granted));
                 }
-            }
-            else
-            {
-                Debug.LogWarning("Couldn't process input for some reason..");
             }
 
         }
@@ -125,6 +128,12 @@ namespace NavKeypad
             onAccessGranted?.Invoke();
             panelMesh.material.SetVector("_EmissionColor", screenGrantedColor * screenIntensity);
             audioSource.PlayOneShot(accessGrantedSfx);
+            
+            // TIMER INTEGRATION: Notify timer of success
+            if (EscapeRoomTimer.Instance != null)
+            {
+                EscapeRoomTimer.Instance.OnAccessGranted();
+            }
         }
 
     }

@@ -1,3 +1,6 @@
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace NavKeypad
 {
@@ -14,21 +17,35 @@ namespace NavKeypad
         void Awake()
         {
             btn = GetComponent<KeypadButton>();
+            
+            if (interactable == null)
+            {
+                interactable = GetComponent<XRSimpleInteractable>();
+            }
         }
 
         void OnEnable()
         {
-            if (interactable != null) interactable.selectEntered.AddListener(OnSelectEntered);
+            if (interactable != null)
+            {
+                interactable.selectEntered.AddListener(OnSelectEntered);
+            }
         }
 
         void OnDisable()
         {
-            if (interactable != null) interactable.selectEntered.RemoveListener(OnSelectEntered);
+            if (interactable != null)
+            {
+                interactable.selectEntered.RemoveListener(OnSelectEntered);
+            }
         }
 
         void OnSelectEntered(SelectEnterEventArgs args)
         {
-            btn?.PressButton();
+            if (btn != null)
+            {
+                btn.PressButton();
+            }
         }
     }
 }

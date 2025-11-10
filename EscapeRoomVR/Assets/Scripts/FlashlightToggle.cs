@@ -7,6 +7,9 @@ using TMPro;
 public class FlashlightToggle : MonoBehaviour
 {
     public Light flashlight;
+    public AudioClip flashlightOnSound;
+    public AudioClip flashlightOffSound;
+    private AudioSource audioSource;
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable grabInteractable;
     private bool isFlashlightOn = false;
 
@@ -18,24 +21,26 @@ public class FlashlightToggle : MonoBehaviour
     {
         grabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
         
+        // Get or add AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 1f;
+        }
+        
         if (grabInteractable == null)
         {
-            Debug.LogError("[FlashlightToggle] XRGrabInteractable component not found!");
             return;
         }
 
-        if (flashlight == null)
+        if (flashlight != null)
         {
-            Debug.LogError("[FlashlightToggle] Light not assigned in Inspector!");
-        }
-        else
-        {
-            Debug.Log($"[FlashlightToggle] Light found: {flashlight.name}, initial state: {flashlight.enabled}");
             isFlashlightOn = flashlight.gameObject.activeSelf;
         }
 
         grabInteractable.activated.AddListener(ToggleFlashlight);
-        Debug.Log("[FlashlightToggle] Script initialized and listener added");
     }
 
     private void OnDestroy()
@@ -46,17 +51,17 @@ public class FlashlightToggle : MonoBehaviour
 
     private void ToggleFlashlight(ActivateEventArgs args)
     {
-        Debug.Log("[FlashlightToggle] ToggleFlashlight called!");
         
         if (flashlight == null)
         {
-            Debug.LogError("[FlashlightToggle] Light is null!");
             return;
         }
 
         isFlashlightOn = !isFlashlightOn;
         flashlight.gameObject.SetActive(isFlashlightOn);
-        Debug.Log($"[FlashlightToggle] Light is now: {(isFlashlightOn ? "ON" : "OFF")}");
+
+        // Play sound based on flashlight state
+        PlayToggleSound(isFlashlightOn);
 
         // Update all registered texts to reflect new flashlight state
         if (registeredTexts.Count > 0)
@@ -74,17 +79,25 @@ public class FlashlightToggle : MonoBehaviour
             }
         }
 
-        // Optional: update any reactive text currently in immediate range as well
         UpdateReactiveTextInRange(isFlashlightOn);
+    }
+
+    private void PlayToggleSound(bool turnedOn)
+    {
+        if (audioSource == null) return;
+
+        AudioClip clipToPlay = turnedOn ? flashlightOnSound : flashlightOffSound;
+        if (clipToPlay != null)
+        {
+            audioSource.PlayOneShot(clipToPlay);
+        }
     }
 
     // When this object's trigger touches a ReactiveText collider, register it and reveal/hide based on flashlight state
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[FlashlightToggle] OnTriggerEnter called with: {other.name} tag: {other.tag}");
         if (!other.CompareTag("ReactiveText")) return;
 
-        Debug.Log("[FlashlightToggle] Entered trigger with ReactiveText");
         var text = other.GetComponent<TextMeshPro>();
         if (text == null) return;
 
@@ -93,7 +106,6 @@ public class FlashlightToggle : MonoBehaviour
 
         // show only if flashlight is on, otherwise remain hidden
         SetTextAlpha(text, isFlashlightOn ? 1f : 0f);
-        Debug.Log($"[FlashlightToggle] ReactiveText registered and set to alpha {(isFlashlightOn ? "1" : "0")}");
     }
 
     private void OnTriggerExit(Collider other)
@@ -105,11 +117,9 @@ public class FlashlightToggle : MonoBehaviour
 
         // unregister and hide
         registeredTexts.Remove(text);
-        SetTextAlpha(text, 0f); // hide when leaving trigger
-        Debug.Log("[FlashlightToggle] ReactiveText unregistered and hidden on exit");
+        SetTextAlpha(text, 0f);
     }
 
-    // Helper to set alpha safely
     private void SetTextAlpha(TextMeshPro text, float alpha)
     {
         Color c = text.color;
@@ -117,7 +127,6 @@ public class FlashlightToggle : MonoBehaviour
         text.color = c;
     }
 
-    // Optional: when toggling the flashlight, reveal/hide any nearby ReactiveText colliders overlapping this object
     private void UpdateReactiveTextInRange(bool reveal)
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, 0.5f);
