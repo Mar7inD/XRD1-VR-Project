@@ -30,10 +30,9 @@ The 4th section is about the personal reflection we have to give about the work 
 - [Reflections](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/reflections.md)
 
 ### Video - EscapeRoomVR
-- [Video]()
+- [Video](https://youtu.be/Qpw1NA-ecPc)
 
 ### Use Case
-
 Setting up escape room is costly and sometimes experience could not match each game. It takes time to rearange the environment. With VR this could be easily avoided as the rearangement happens instantly, the cost is the headset and electricity. 
 
 ### Tools Used
