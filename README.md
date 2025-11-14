@@ -7,7 +7,7 @@ The blogpost are separated in 4 sections.
 
 Week [1](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week1_introduction.md) is about the 1st introduction week. 
 
-Week [4](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week4_lab1.md) and [9](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week9_lab4.md) are about decisions and what lead to taking them plus some set up work. Asset references can be found there as well. 
+Week [4](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week4_lab1.md) and [9](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week9_lab4.md) are about decisions and what lead to taking them plus some set up work. References to external assets and code used in the development process can be found at the bottom of week [4](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week4_lab1.md) and [9](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week9_lab4.md) blogposts as well. 
 
 Week [5](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week5_lab2.md), [6](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week6_lab3.md), [10](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week10_lab5.md), [11](https://github.com/Mar7inD/XRD1-AR-Project/blob/main/blogposts/week11_lab6.md) are about the AR and VR projects. 
 
