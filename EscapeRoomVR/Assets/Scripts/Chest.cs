@@ -8,10 +8,8 @@ public class Chest : MonoBehaviour
     [SerializeField] private ParticleSystem openParticles;
     
     [Header("Animation Control")]
-    [SerializeField] private string animationStateName = "Entry";
     [SerializeField] private float openSpeed = 1f; 
     [SerializeField] private bool canPause = true;
-    [SerializeField] private bool canReverse = true;
     
     [Header("Stop at Specific Point")]
     [SerializeField] private bool stopAtPoint = true; 
@@ -20,7 +18,6 @@ public class Chest : MonoBehaviour
     private AudioSource audioSource;
     private bool isOpen = false;
     private bool isPaused = false;
-    private float currentAnimationTime = 0f;
     private Coroutine animationCoroutine;
     
     void Awake()
